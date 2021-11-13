@@ -6,21 +6,22 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
+use Validator;
 
 class AuthController extends Controller
 {
     public function register(Request $request){
         $fields = $request->validate([
-            'name ' => 'required|string',
+            'name' => 'required|string|max:255',
             'email' => 'required|string|unique:users,email',
-            'phone number' => 'required|digits:10',
+            'phone_number' => 'required|string|min:10',
             'password' => 'required|string|confirmed'
         ]);
 
         $user = User::create([
             'name' => $fields['name'],
             'email' => $fields['email'],
-            'phone number' => $fields['phone number'],
+            'phone_number' => $fields['phone_number'],
             'password' => bcrypt($fields['password'])
         ]);
 
@@ -33,6 +34,41 @@ class AuthController extends Controller
 
         return response($response, 201);
 
+    }
+
+//    public function register(Request $request): \Illuminate\Http\JsonResponse
+//    {
+//        $validator = Validator::make($request->all(),[
+//            'name' => 'required|string|max:255',
+//            'email' => 'required|string|email|max:255|unique:users',
+//            'phone_number' => 'required|string|min:10',
+//            'password' => 'required|string|min:8|confirmed'
+//        ]);
+//
+//        if($validator->fails()){
+//            return response()->json($validator->errors());
+//        }
+//
+//        $user = User::create([
+//            'name' => $request->name,
+//            'email' => $request->email,
+//            'phone_number' => $request->phone_number,
+//            'password' => Hash::make($request->password)
+//        ]);
+//
+//        $token = $user->createToken('auth_token')->plainTextToken;
+//
+//        return response()
+//            ->json(['data' => $user,'access_token' => $token, 'token_type' => 'Bearer', ]);
+//    }
+
+    public function test(REquest $request){
+        $fields = $request->validate([
+            'name' => 'required|string',
+            'phone number' => 'required|string'
+        ]);
+
+        return response("worked", 200);
     }
 
     public function login(Request $request){
@@ -60,9 +96,9 @@ class AuthController extends Controller
 
     }
 
-    public function logout(Request $request){
-        $request->user()->currentAccessToken()->delete();
-
+    public function logout(Request $request)
+    {
+        auth()->user()->tokens()->delete();
         return [
             'message' => 'Logged out'
         ];
