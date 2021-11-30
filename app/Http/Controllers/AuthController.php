@@ -10,7 +10,8 @@ use Validator;
 
 class AuthController extends Controller
 {
-    public function register(Request $request){
+    public function register(Request $request)
+    {
         $fields = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -34,7 +35,7 @@ class AuthController extends Controller
             'token' => $token
         ];
 
-        return response($response, 201);
+        return responder()->success($response)->meta(['Message' => 'Registration successful']);
 
     }
 
@@ -94,7 +95,7 @@ class AuthController extends Controller
             'token' => $token
         ];
 
-        return response($response, 201);
+        return responder()->success($response)->meta(['Message' => 'Login successful'])->respond(201);
 
     }
 
