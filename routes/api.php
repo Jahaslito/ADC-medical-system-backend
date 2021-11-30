@@ -35,6 +35,8 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
 
     });
 });
+// Vital Signs
+Route::post('/vitals', [MainController::class, 'vitals']);
 
 Route::get('/test', function(){
     return "test";
