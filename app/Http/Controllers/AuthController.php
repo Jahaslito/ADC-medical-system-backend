@@ -64,7 +64,7 @@ class AuthController extends Controller
 //            ->json(['data' => $user,'access_token' => $token, 'token_type' => 'Bearer', ]);
 //    }
 
-    public function test(REquest $request){
+    public function test(Request $request){
         $fields = $request->validate([
             'name' => 'required|string',
             'phone number' => 'required|string'
