@@ -21,4 +21,8 @@ class Prescription extends Model
         'quantity',
         'dosage'
     ];
+
+    public function diagnosis() {
+    	return $this->belongsToMany(Diagnosis::class);
+    }
 }

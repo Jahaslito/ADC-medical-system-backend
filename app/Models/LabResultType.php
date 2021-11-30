@@ -20,4 +20,9 @@ class LabResultType extends Model
         'lab_result_name',
         'unit'
     ];
+
+    public function labresult() {
+    	return $this->belongsTo(LabResult::class);
+    }
 }
+

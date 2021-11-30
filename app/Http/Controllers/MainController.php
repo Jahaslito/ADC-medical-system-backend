@@ -16,10 +16,15 @@ class MainController extends Controller
             'blood_pressure' => 'required',
             'height' => 'required',
             'pulse_rate' => 'required',
-            'BMI' => 'required',
+            
             'lab_test_id' => 'required',
             'staff_id' => 'required'
         ]);
+
+        $weight = $fields['weight'];
+        $height = $fields['height'];
+
+        $BMI = $weight / ($height*$height);
 
         $vitalsign = VitalSigns::create([
             'patient_id' => $fields['patient_id'],
@@ -27,7 +32,7 @@ class MainController extends Controller
             'blood_pressure' => $fields['blood_pressure'],
             'height' => $fields['height'],
             'pulse_rate' => $fields['pulse_rate'],
-            'BMI' => $fields['BMI'],
+            'BMI' => $BMI,
             'lab_test_id' => $fields['lab_test_id'],
             'staff_id' => $fields['staff_id']
         ]);
@@ -41,6 +46,5 @@ class MainController extends Controller
                 "message" => "There was an error inserting the patient records!!Please try again"
             ], 401);
         }
-
     }
 }

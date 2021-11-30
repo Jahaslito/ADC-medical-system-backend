@@ -21,4 +21,12 @@ class Diagnosis extends Model
         'diagnosis',
         'prescription_id'
     ];
+
+    public function user() {
+    	return $this->belongsTo(User::class);
+    }
+
+    public function prescription() {
+    	return $this->belongsToMany(Prescription::class);
+    }
 }

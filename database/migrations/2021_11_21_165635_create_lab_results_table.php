@@ -17,11 +17,13 @@ class CreateLabResultsTable extends Migration
             $table->bigIncrements('lab_test_id');
 
             $table->string('patient_id');
+            $table->foreign('patient_id')->references('id')->on('users');
             
             $table->string('results');
             $table->string('test_type');
             
-            $table->integer('result_type_id');
+            $table->integer('lab_result_id');
+            $table->foreign('lab_result_id')->references('lab_result_id')->on('lab_result_types');
 
             $table->timestamps();
         });

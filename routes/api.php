@@ -20,15 +20,24 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/try', [AuthController::class, 'test']);
+
+Route::prefix('v1')->group(function () {
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/try', [AuthController::class, 'test']);
+    Route::get('/verify_staff/{staff_id}',[StaffRegistration::class, 'verify_staff']);
+    Route::post('/register_staff',[StaffRegistration::class, 'register_staff']);
+});
 
 Route::group(['middleware' => ['auth:sanctum']], function (){
-    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::prefix('v1')->group(function () {
+        Route::post('/logout', [AuthController::class, 'logout']);
+        // Vital Signs
+		//Route::post('/vitals', [MainController::class, 'vitals']);
 
+    });
 });
-// Vital Signs
+
 Route::post('/vitals', [MainController::class, 'vitals']);
 
 Route::get('/test', function(){
