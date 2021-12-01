@@ -18,8 +18,19 @@ class LabResult extends Model
     protected $fillable = [
         'lab_test_id',
         'patient_id',
-        'results',
         'test_type',
         'result_type_id'
     ];
+
+    public function user() {
+    	return $this->belongsTo(User::class);
+    }
+
+    public function labresulttype() {
+    	return $this->hasMany(LabResultType::class);
+    }
+
+    public function vitalsigns() {
+    	$return $this->belongsTo(VitalSigns::class);
+    }
 }

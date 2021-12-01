@@ -16,11 +16,14 @@ class CreateDiagnosesTable extends Migration
         Schema::create('diagnoses', function (Blueprint $table) {
             $table->bigIncrements('diagnosis_id');
 
-            $table->integer('staff_id');
-            $table->integer('patient_id');
-            
+            $table->string('staff_id');
+
+            $table->string('patient_id');
+            $table->foreign('patient_id')->references('id')->on('users');
+
             $table->string('diagnosis');
             $table->string('prescription_id');
+            $table->foreign('prescription_id')->references('prescription_id')->on('prescriptions');
 
             $table->timestamps();
         });
