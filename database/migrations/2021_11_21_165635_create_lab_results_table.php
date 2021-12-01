@@ -19,7 +19,7 @@ class CreateLabResultsTable extends Migration
             $table->string('patient_id');
             $table->foreign('patient_id')->references('id')->on('users');
             
-            $table->string('results');
+            // $table->string('results');
             $table->string('test_type');
             
             $table->string('lab_result_id');

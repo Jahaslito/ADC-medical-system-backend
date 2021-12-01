@@ -18,7 +18,6 @@ class LabResult extends Model
     protected $fillable = [
         'lab_test_id',
         'patient_id',
-        'results',
         'test_type',
         'result_type_id'
     ];
