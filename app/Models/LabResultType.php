@@ -17,6 +17,7 @@ class LabResultType extends Model
      */
     protected $fillable = [
         'lab_result_id',
+        'patient_id',
         'lab_result_name',
         'unit'
     ];

@@ -22,7 +22,7 @@ class CreateLabResultsTable extends Migration
             $table->string('results');
             $table->string('test_type');
             
-            $table->integer('lab_result_id');
+            $table->string('lab_result_id');
             $table->foreign('lab_result_id')->references('lab_result_id')->on('lab_result_types');
 
             $table->timestamps();

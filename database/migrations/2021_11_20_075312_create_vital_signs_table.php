@@ -25,7 +25,7 @@ class CreateVitalSignsTable extends Migration
             $table->string('pulse_rate')->nullable();
             $table->double('BMI', 8, 2);
             
-            $table->integer('lab_test_id')->nullable();
+            $table->string('lab_test_id')->nullable();
             $table->foreign('lab_test_id')->references('lab_test_id')->on('lab_results');
 
             $table->string('staff_id');

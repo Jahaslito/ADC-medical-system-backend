@@ -39,6 +39,11 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
 });
 
 Route::post('/vitals', [MainController::class, 'vitals']);
+Route::post('/diagnosis', [MainController::class, 'diagnosis']);
+Route::post('/symptoms', [MainController::class, 'symptoms']);
+Route::post('/lab_results', [MainController::class, 'lab_results']);
+Route::post('/lab_result_type', [MainController::class, 'lab_result_type']);
+Route::post('/update_vitals', [MainController::class, 'update_vitals']);
 
 Route::get('/test', function(){
     return "test";
