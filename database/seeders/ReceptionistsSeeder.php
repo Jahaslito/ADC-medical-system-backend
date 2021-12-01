@@ -2,13 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Doctor;
-use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
-class DoctorsSeeder extends Seeder
+class ReceptionistsSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -18,7 +16,7 @@ class DoctorsSeeder extends Seeder
     public function run()
     {
         $faker = Faker::create('en_GB');
-        DB::table('doctors')->insert([
+        DB::table('receptionists')->insert([
             'first_name' => $faker->name,
             'last_name' => $faker->name,
             'email' => $faker->safeEmail,
