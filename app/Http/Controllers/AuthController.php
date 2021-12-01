@@ -26,7 +26,7 @@ class AuthController extends Controller
             'email' => $fields['email'],
             'phone_number' => $fields['phone_number'],
             'password' => bcrypt($fields['password'])
-        ]);
+        ]); 
 
         $token = $user->createToken('myapptoken')->plainTextToken;
 
@@ -39,32 +39,6 @@ class AuthController extends Controller
 
     }
 
-//    public function register(Request $request): \Illuminate\Http\JsonResponse
-//    {
-//        $validator = Validator::make($request->all(),[
-//            'name' => 'required|string|max:255',
-//            'email' => 'required|string|email|max:255|unique:users',
-//            'phone_number' => 'required|string|min:10',
-//            'password' => 'required|string|min:8|confirmed'
-//        ]);
-//
-//        if($validator->fails()){
-//            return response()->json($validator->errors());
-//        }
-//
-//        $user = User::create([
-//            'name' => $request->name,
-//            'email' => $request->email,
-//            'phone_number' => $request->phone_number,
-//            'password' => Hash::make($request->password)
-//        ]);
-//
-//        $token = $user->createToken('auth_token')->plainTextToken;
-//
-//        return response()
-//            ->json(['data' => $user,'access_token' => $token, 'token_type' => 'Bearer', ]);
-//    }
-
     public function test(Request $request){
         $fields = $request->validate([
             'name' => 'required|string',
@@ -74,6 +48,7 @@ class AuthController extends Controller
         return response("worked", 200);
     }
 
+    // Login function
     public function login(Request $request){
         $fields = $request->validate([
             'email' => 'required|string',
@@ -99,6 +74,7 @@ class AuthController extends Controller
 
     }
 
+    // Logout function
     public function logout(Request $request)
     {
         auth()->user()->tokens()->delete();
