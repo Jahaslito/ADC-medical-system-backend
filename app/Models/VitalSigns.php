@@ -26,4 +26,12 @@ class VitalSigns extends Model
         'staff_id'
     ];
 
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
+
+    public function labresult() {
+        return $this->hasMany(LabResult::class);
+    }
+
 }

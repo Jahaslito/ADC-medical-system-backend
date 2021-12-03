@@ -17,6 +17,7 @@ class CreateSymptomsTable extends Migration
             $table->bigIncrements('symptoms_id');
 
             $table->string('patient_id');
+            $table->foreign('patient_id')->references('id')->on('users');
 
             $table->string('description');            
             $table->timestamps();
