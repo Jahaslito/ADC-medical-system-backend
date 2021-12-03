@@ -18,8 +18,8 @@ class NursesSeeder extends Seeder
     {
         $faker = Faker::create('en_GB');
         DB::table('nurses')->insert([
-            'first_name' => $faker->name,
-            'last_name' => $faker->name,
+            'first_name' => $faker->firstName,
+            'last_name' => $faker->lastName,
             'email' => $faker->safeEmail,
             'phone_number' => $faker->phoneNumber,
         ]);
