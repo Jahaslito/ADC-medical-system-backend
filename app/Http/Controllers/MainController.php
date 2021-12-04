@@ -21,7 +21,7 @@ class MainController extends Controller
             'blood_pressure' => 'required',
             'height' => 'required',
             'pulse_rate' => 'required',
-            
+
             'lab_test_id' => 'required',
             'staff_id' => 'required'
         ]);
@@ -44,7 +44,7 @@ class MainController extends Controller
 
         if ($vitalsign) {
             return response([
-                "message" => "Patient records have been successfully inserted"
+                "message" => "PatientController records have been successfully inserted"
             ], 200);
         } else {
             return response([
@@ -107,7 +107,7 @@ class MainController extends Controller
         } else {
             return response([
                 "message" => "There was an error updating the vitals records!!Please try again"
-            ], 401);    
+            ], 401);
         }
     }
 
@@ -152,7 +152,7 @@ class MainController extends Controller
 
         if ($symptom) {
             return response([
-                "message" => "Patient's Symptoms have been successfully inserted"
+                "message" => "PatientController's Symptoms have been successfully inserted"
             ], 200);
         } else{
             return response([

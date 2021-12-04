@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DiseaseController;
+use App\Http\Controllers\PatientController;
 use App\Http\Controllers\StaffRegistration;
 use App\Http\Controllers\MainController;
 use Illuminate\Http\Request;
@@ -28,6 +30,15 @@ Route::prefix('v1')->group(function () {
     Route::post('/verify_staff/{staff_id}',[StaffRegistration::class, 'verify_staff']);
     Route::post('/register_staff',[StaffRegistration::class, 'register_staff']);
     Route::post('/login_staff', [StaffRegistration::class, 'login_staff']);
+    Route::get('/doctors', [StaffRegistration::class, 'show_all_doctors']);
+    Route::get('/nurses', [StaffRegistration::class, 'show_all_nurses']);
+    Route::get('/lab_technicians', [StaffRegistration::class, 'show_all_lab_technicians']);
+    Route::get('/receptionists', [StaffRegistration::class, 'show_all_receptionists']);
+    Route::get('/patients', [PatientController::class, 'index']);
+    Route::post('/search_patient', [PatientController::class, 'show']);
+    Route::post('/test', [DiseaseController::class, 'data_collection']);
+
+
 });
 
 Route::group(['middleware' => ['auth:sanctum']], function (){
