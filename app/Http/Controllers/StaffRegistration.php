@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Doctor;
-use App\Models\LabTechnitian;
+use App\Models\LabTechnician;
 use App\Models\Nurse;
 use App\Models\Receptionist;
 use App\Models\User;
@@ -13,6 +13,26 @@ use Illuminate\Support\Facades\Hash;
 
 class StaffRegistration extends Controller
 {
+    public function show_all_doctors(){
+        $doctors = Doctor::all();
+        return responder()->success($doctors)->respond();
+    }
+
+    public function show_all_nurses(){
+        $nurses = Nurse::all();
+        return responder()->success($nurses)->respond();
+    }
+
+    public function show_all_lab_technicians(){
+        $lab_techs = LabTechnician::all();
+        return responder()->success($lab_techs)->respond();
+    }
+
+    public function show_all_receptionists(){
+        $receptionists = Receptionist::all();
+        return responder()->success($receptionists)->respond();
+    }
+
     public function verify_staff($staff_id, Request $request)
     {
         $role = $request->validate([
@@ -24,7 +44,7 @@ class StaffRegistration extends Controller
         }elseif ($role['role'] == 'Nurse'){
             $result = Nurse::where('id', 'LIKE', '%' . $staff_id . '%')->get();
         }elseif ($role['role'] == 'Lab technician'){
-            $result = LabTechnitian::where('id', 'LIKE', '%' . $staff_id . '%')->get();
+            $result = LabTechnician::where('id', 'LIKE', '%' . $staff_id . '%')->get();
         }elseif ($role['role'] == 'Receptionist'){
             $result = Receptionist::where('id', 'LIKE', '%' . $staff_id . '%')->get();
         }else{
@@ -53,7 +73,7 @@ class StaffRegistration extends Controller
         }elseif ($creds['role'] == 'Nurse'){
             $result = Nurse::where('id', 'LIKE', '%' . $creds['id'] . '%')->get();
         }elseif ($creds['role'] == 'Lab technician'){
-            $result = LabTechnitian::where('id', 'LIKE', '%' . $creds['id'] . '%')->get();
+            $result = LabTechnician::where('id', 'LIKE', '%' . $creds['id'] . '%')->get();
         }elseif ($creds['role'] == 'Receptionist'){
             $result = Receptionist::where('id', 'LIKE', '%' . $creds['id'] . '%')->get();
         }else{
@@ -125,7 +145,7 @@ class StaffRegistration extends Controller
             return responder()->success($response)->meta(['Message' => 'Staff logged in successfully!']);
 
         }elseif ($fields['role'] == 'Lab technician'){
-            $lab_tech = LabTechnitian::where('id', $fields['id'])->first();
+            $lab_tech = LabTechnician::where('id', $fields['id'])->first();
 
             if (!$lab_tech || !Hash::check($fields['password'], $lab_tech->password)) {
                 return response([
