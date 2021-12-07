@@ -25,7 +25,7 @@ class MainController extends Controller
             'blood_pressure' => 'required',
             'height' => 'required',
             'pulse_rate' => 'required',
-            
+
             'lab_test_id' => 'required',
             'staff_id' => 'required'
         ]);
@@ -49,6 +49,11 @@ class MainController extends Controller
 
         if ($vitalsign) {
             return responder()->success($vitalsign)->meta(["message" => "Patient's vitals have been successfully inserted"]);
+            
+            return response([
+                "message" => "PatientController records have been successfully inserted"
+            ], 200);
+
         } else {
             return responder()->error(404, "There was an error inserting the patient's vitals!!!Please try again")->respond(404);
         }
@@ -148,6 +153,11 @@ class MainController extends Controller
             return responder()->success($prescription->toArray())->meta(["message" => "Prescription fetched successfully"]);
         } else {
             return responder()->error(404, 'Patient ID id not found!')->respond(404);
+
+            return response([
+                "message" => "There was an error updating the vitals records!!Please try again"
+            ], 401);
+
         }
     }
 
@@ -191,6 +201,14 @@ class MainController extends Controller
             return responder()->success($symptom)->meta(["message" => "Patient's Symptoms have been successfully inserted"]);
         } else {
             return responder()->error(404, "There was an error inserting the patient symptoms!!!Please try again")->respond(404);  
+
+            return response([
+                "message" => "PatientController's Symptoms have been successfully inserted"
+            ], 200);
+        } else{
+            return response([
+                "message" => "There was an error inserting the patient symptoms!!Please try again"
+            ], 401);
         }
     }
 
