@@ -18,6 +18,7 @@ class VitalSigns extends Model
     protected $fillable = [
         'patient_id',
         'weight',
+        'temperature',
         'blood_pressure',
         'height',
         'pulse_rate',
