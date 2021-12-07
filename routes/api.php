@@ -33,15 +33,24 @@ Route::prefix('v1')->group(function () {
 Route::group(['middleware' => ['auth:sanctum']], function (){
     Route::prefix('v1')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
-        Route::post('/vitals', [MainController::class, 'vitals']);
+        /*Route::post('/vitals', [MainController::class, 'vitals']);
+        Route::post('/diagnosis', [MainController::class, 'diagnosis']);
+        Route::post('/symptoms', [MainController::class, 'symptoms']);
+        Route::post('/lab_results', [MainController::class, 'lab_results']);
+        Route::post('/lab_result_type', [MainController::class, 'lab_result_type']);
+        Route::post('/update_vitals', [MainController::class, 'update_vitals']);*/
+    });
+});
+
+Route::post('/vitals', [MainController::class, 'vitals']);
         Route::post('/diagnosis', [MainController::class, 'diagnosis']);
         Route::post('/symptoms', [MainController::class, 'symptoms']);
         Route::post('/lab_results', [MainController::class, 'lab_results']);
         Route::post('/lab_result_type', [MainController::class, 'lab_result_type']);
         Route::post('/update_vitals', [MainController::class, 'update_vitals']);
-    });
-});
-
+        Route::post('/search_vitals/{patient_id}', [MainController::class, 'search_vitals']);
+        Route::post('/fetch_diagnosis/{patient_id}', [MainController::class, 'fetch_diagnosis']);
+        Route::post('/fetch_prescription/{patient_id}', [MainController::class, 'fetch_prescription']);
 
 Route::get('/test', function(){
     return "test";

@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Http\Response;
+use Validator;
+use App\Models\User;
 use App\Models\VitalSigns;
 use App\Models\Diagnosis;
 use App\Models\Symptoms;
 use App\Models\LabResult;
 use App\Models\LabResultType;
+use App\Models\prescription;
 
 class MainController extends Controller
 {
@@ -18,6 +21,7 @@ class MainController extends Controller
         $fields = $request->validate([
             'patient_id' => 'required',
             'weight' => 'required',
+            'temperature' => 'required',
             'blood_pressure' => 'required',
             'height' => 'required',
             'pulse_rate' => 'required',
@@ -34,6 +38,7 @@ class MainController extends Controller
         $vitalsign = VitalSigns::create([
             'patient_id' => $fields['patient_id'],
             'weight' => $fields['weight'],
+            'temperature' => $fields['temperature'],
             'blood_pressure' => $fields['blood_pressure'],
             'height' => $fields['height'],
             'pulse_rate' => $fields['pulse_rate'],
@@ -43,13 +48,9 @@ class MainController extends Controller
         ]);
 
         if ($vitalsign) {
-            return response([
-                "message" => "Patient records have been successfully inserted"
-            ], 200);
+            return responder()->success($vitalsign)->meta(["message" => "Patient's vitals have been successfully inserted"]);
         } else {
-            return response([
-                "message" => "There was an error inserting the patient records!!Please try again"
-            ], 401);
+            return responder()->error(404, "There was an error inserting the patient's vitals!!!Please try again")->respond(404);
         }
     }
 
@@ -57,9 +58,10 @@ class MainController extends Controller
     public function update_vitals(Request $request) {
         $this->validate($request, [
             'patient_id' => 'required',
-            'weight',
+            'weight' => 'required',
             'blood_pressure',
-            'height',
+            'temperature' => 'required',
+            'height' => 'required',
             'pulse_rate',
             'lab_test_id',
             'staff_id' => 'required'
@@ -69,6 +71,13 @@ class MainController extends Controller
 
         $pat_id = $request->get('patient_id');
         $staffId = $request->get('staff_id');
+
+        $weight = $request->get('weight');
+        $height = $request->get('height');
+
+        $temperature = $request->get('temperature');
+
+        $BMI = $weight / ($height*$height);
 
         if ($request->has('weight')) {
             $vitals->weight = $request->get('weight');
@@ -95,19 +104,50 @@ class MainController extends Controller
                                 ->update([
                                     'weight' => $vitals['weight'],
                                     'blood_pressure' => $vitals['blood_pressure'],
+                                    'temperature' => $temperature,
                                     'height' => $vitals['height'],
+                                    'BMI' => $BMI,
                                     'pulse_rate' => $vitals['pulse_rate'],
                                     'lab_test_id' => $vitals['lab_test_id'],
                                 ]);
 
         if ($updated_vitals) {
-             return response([
-                "message" => "Vitals updated successfully"
-            ], 200);
+            return responder()->success($updated_vitals)->meta(["message" => "Patient's vitals have been successfully updated"]);
         } else {
-            return response([
-                "message" => "There was an error updating the vitals records!!Please try again"
-            ], 401);    
+            return responder()->error(404, "There was an error updating the patient's vitals!!!Please try again")->respond(404);  
+        }
+    }
+
+    // Searching vitals for a particular patient
+    public function search_vitals($patient_id) {
+        $vital_signs = VitalSigns::where('patient_id', 'LIKE', '%' . $patient_id . '%')->get();
+
+        if (count($vital_signs)) {
+            return responder()->success($vital_signs->toArray())->meta(["message" => "Patient's vitals fetched successfully"]);
+        } else {
+            return responder()->error(404, 'Patient ID id not found!')->respond(404);
+        }
+    }
+
+    // Fetching patient diagnosis
+    public function fetch_diagnosis($patient_id) {
+        $patient_diagnosis = Diagnosis::where('patient_id', 'LIKE', '%' . $patient_id . '%')->get();
+
+        if (count($patient_diagnosis)) {
+            return responder()->success($patient_diagnosis->toArray())->meta(["message" => "Patient's diagnoses fetched successfully"]);
+        } else {
+            return responder()->error(404, 'Patient ID id not found!')->respond(404);
+        }
+    }
+
+    // Fetching prescription
+    public function fetch_prescription($patient_id) {
+        $prescription = Prescription::where('patient_id', 'LIKE', '%' . $patient_id . '%')->get();
+
+        if (count($prescription)) {
+            return responder()->success($prescription->toArray())->meta(["message" => "Prescription fetched successfully"]);
+        } else {
+            return responder()->error(404, 'Patient ID id not found!')->respond(404);
         }
     }
 
@@ -128,14 +168,11 @@ class MainController extends Controller
         ]);
 
         if ($diagnoses) {
-            return response([
-                "message" => "Diagnosis records have been successfully inserted"
-            ], 200);
-        } else{
-            return response([
-                "message" => "There was an error inserting the diagnosis records!!Please try again"
-            ], 401);
+            return responder()->success($diagnoses)->meta(["message" => "Diagnosis records have been successfully inserted"]);
+        } else {
+            return responder()->error(404, "There was an error inserting the diagnosis records!!!Please try again")->respond(404);  
         }
+
     }
 
     // Inputting symptoms
@@ -151,13 +188,9 @@ class MainController extends Controller
         ]);
 
         if ($symptom) {
-            return response([
-                "message" => "Patient's Symptoms have been successfully inserted"
-            ], 200);
-        } else{
-            return response([
-                "message" => "There was an error inserting the patient symptoms!!Please try again"
-            ], 401);
+            return responder()->success($symptom)->meta(["message" => "Patient's Symptoms have been successfully inserted"]);
+        } else {
+            return responder()->error(404, "There was an error inserting the patient symptoms!!!Please try again")->respond(404);  
         }
     }
 
@@ -176,13 +209,9 @@ class MainController extends Controller
         ]);
 
         if ($result_type) {
-            return response([
-                "message" => "Result Type records have been successfully inserted"
-            ], 200);
-        } else{
-            return response([
-                "message" => "There was an error inserting the Result Type records!!Please try again"
-            ], 401);
+            return responder()->success($result_type)->meta(["message" => "Result Type records have been successfully inserted"]);
+        } else {
+            return responder()->error(404, "There was an error inserting the Result Type records!!!Please try again")->respond(404);  
         }
     }
 
@@ -208,13 +237,9 @@ class MainController extends Controller
         ]);
 
         if ($lab_result) {
-            return response([
-                "message" => "Lab records have been successfully inserted"
-            ], 200);
-        } else{
-            return response([
-                "message" => "There was an error inserting the lab records!!Please try again"
-            ], 401);
+            return responder()->success($lab_result)->meta(["message" => "Lab records have been successfully inserted"]);
+        } else {
+            return responder()->error(404, "There was an error inserting the lab records!!!Please try again")->respond(404);  
         }
     }
 }
