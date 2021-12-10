@@ -31,6 +31,6 @@ class LabResult extends Model
     }
 
     public function vitalsigns() {
-    	$return $this->belongsTo(VitalSigns::class);
+    	return $this->belongsTo(VitalSigns::class);
     }
 }
