@@ -16,19 +16,21 @@ class CreateVitalSignsTable extends Migration
         Schema::create('vital_signs', function (Blueprint $table) {
             $table->bigIncrements('vital_signs_id');
 
-            $table->string('patient_id');
+            $table->bigInteger('patient_id');
             $table->foreign('patient_id')->references('id')->on('users');
 
             $table->integer('weight');
+            $table->double('temperature', 8, 2);
             $table->string('blood_pressure');
             $table->integer('height');
             $table->string('pulse_rate')->nullable();
             $table->double('BMI', 8, 2);
             
-            $table->string('lab_test_id')->nullable();
+            $table->bigInteger('lab_test_id');
             $table->foreign('lab_test_id')->references('lab_test_id')->on('lab_results');
 
-            $table->string('staff_id');
+            $table->bigInteger('staff_id');
+            $table->foreign('staff_id')->references('nurses')->on('id');
 
             $table->timestamps();
         });

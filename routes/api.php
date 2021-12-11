@@ -50,6 +50,9 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
         Route::post('/lab_results', [MainController::class, 'lab_results']);
         Route::post('/lab_result_type', [MainController::class, 'lab_result_type']);
         Route::post('/update_vitals', [MainController::class, 'update_vitals']);
+        Route::post('/search_vitals/{patient_id}', [MainController::class, 'search_vitals']);
+        Route::post('/fetch_diagnosis/{patient_id}', [MainController::class, 'fetch_diagnosis']);
+        Route::post('/fetch_prescription/{patient_id}', [MainController::class, 'fetch_prescription']);
     });
 });
 
