@@ -15,7 +15,7 @@ class CreateLabResultTypesTable extends Migration
     {
         Schema::create('lab_result_types', function (Blueprint $table) {
             $table->bigIncrements('lab_result_id');
-            $table->string('patient_id');
+            $table->bigInteger('patient_id');
             $table->foreign('patient_id')->references('id')->on('users');
             $table->string('lab_result_name');
             $table->string('unit');
