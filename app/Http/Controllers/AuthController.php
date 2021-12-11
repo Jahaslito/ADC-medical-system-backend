@@ -16,6 +16,10 @@ class AuthController extends Controller
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'email' => 'required|string|unique:users,email',
+            'date_of_birth' => 'required',
+            'gender' => 'required|string',
+            'address' => 'required',
+            'town' => 'required',
             'phone_number' => 'required|string|min:10',
             'password' => 'required|string|confirmed|min:8'
         ]);
@@ -24,9 +28,13 @@ class AuthController extends Controller
             'first_name' => $fields['first_name'],
             'last_name' => $fields['last_name'],
             'email' => $fields['email'],
+            'date_of_birth' => $fields['date_of_birth'],
+            'gender' => $fields['gender'],
+            'address' => $fields['address'],
+            'town' => $fields['town'],
             'phone_number' => $fields['phone_number'],
             'password' => bcrypt($fields['password'])
-        ]); 
+        ]);
 
         $token = $user->createToken('myapptoken')->plainTextToken;
 
@@ -82,4 +90,5 @@ class AuthController extends Controller
             'message' => 'Logged out'
         ];
     }
+
 }
