@@ -40,6 +40,7 @@ Route::prefix('v1')->group(function () {
     Route::get('/patients', [PatientController::class, 'index']);
     Route::post('/search_patient', [PatientController::class, 'show']);
     Route::post('/patient', [PatientController::class, 'search']);
+    Route::post('/research_images', [DiseaseController::class, 'data_collection']);
 
 
 });
