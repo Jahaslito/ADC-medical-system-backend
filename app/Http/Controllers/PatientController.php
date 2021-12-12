@@ -31,7 +31,7 @@ class PatientController extends Controller
             'id' => 'required',
         ]);
 
-        $result = User::where('id', 'LIKE', '%' . $patient['id'] . '%')->get();
+        $result = User::where('id', $patient['id'])->get();
 
         if (count($result)) {
             return responder()->success($result)->meta(['Message' => 'Patient found!']);
