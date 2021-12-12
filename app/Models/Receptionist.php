@@ -17,4 +17,8 @@ class Receptionist extends Model
         'password',
         'phone_number'
     ];
+
+    public function appointment() {
+    	return $this->hasMany(Appointment::class);
+    }
 }
