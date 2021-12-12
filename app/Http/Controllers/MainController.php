@@ -12,7 +12,7 @@ use App\Models\Diagnosis;
 use App\Models\Symptoms;
 use App\Models\LabResult;
 use App\Models\LabResultType;
-use App\Models\prescription;
+use App\Models\Prescription;
 
 class MainController extends Controller
 {
@@ -61,65 +61,40 @@ class MainController extends Controller
 
     // Update Vital Signs
     public function update_vitals(Request $request) {
-        $this->validate($request, [
+        $fields = $request->validate([
             'patient_id' => 'required',
             'weight' => 'required',
-            'blood_pressure',
+            'blood_pressure' => 'required',
             'temperature' => 'required',
             'height' => 'required',
-            'pulse_rate',
-            'lab_test_id',
+            'pulse_rate' => 'required',
+            'lab_test_id' => 'required',
             'staff_id' => 'required'
         ]);
-
-        $vitals = new VitalSigns;
-
-        $pat_id = $request->get('patient_id');
-        $staffId = $request->get('staff_id');
-
-        $weight = $request->get('weight');
-        $height = $request->get('height');
-
-        $temperature = $request->get('temperature');
+        
+        $weight = $fields['weight'];
+        $height = $fields['height'];
 
         $BMI = $weight / ($height*$height);
 
-        if ($request->has('weight')) {
-            $vitals->weight = $request->get('weight');
-        }
-
-        if ($request->has('blood_pressure')) {
-            $vitals->blood_pressure = $request->get('blood_pressure');
-        }
-
-        if ($request->has('height')) {
-            $vitals->height = $request->get('height');
-        }
-
-        if ($request->has('pulse_rate')) {
-            $vitals->pulse_rate = $request->get('pulse_rate');
-        }
-
-        if ($request->has('lab_test_id')) {
-            $vitals->lab_test_id = $request->get('lab_test_id');
-        }
-
         $updated_vitals = DB::table('vital_signs')
-                                ->where('patient_id', $pat_id)
+                                ->where('patient_id', $fields['patient_id'])
                                 ->update([
-                                    'weight' => $vitals['weight'],
-                                    'blood_pressure' => $vitals['blood_pressure'],
-                                    'temperature' => $temperature,
-                                    'height' => $vitals['height'],
+                                    'weight' => $fields['weight'],
+                                    'blood_pressure' => $fields['blood_pressure'],
+                                    'temperature' => $fields['temperature'],
+                                    'height' => $fields['height'],
                                     'BMI' => $BMI,
-                                    'pulse_rate' => $vitals['pulse_rate'],
-                                    'lab_test_id' => $vitals['lab_test_id'],
+                                    'pulse_rate' => $fields['pulse_rate'],
+                                    'lab_test_id' => $fields['lab_test_id'],
                                 ]);
 
         if ($updated_vitals) {
-            return responder()->success($updated_vitals)->meta(["message" => "Patient's vitals have been successfully updated"]);
+            return response([
+                "message" => "Patient's vitals have been successfully updated"
+            ], 200);
         } else {
-            return responder()->error(404, "There was an error updating the patient's vitals!!!Please try again")->respond(404);  
+            return responder()->error(404, "There was an error updating the patient's vitals. Please confirm the patient ID and try again!")->respond(404);  
         }
     }
 
@@ -145,19 +120,45 @@ class MainController extends Controller
         }
     }
 
-    // Fetching prescription
-    public function fetch_prescription($patient_id) {
-        $prescription = Prescription::where('patient_id', 'LIKE', '%' . $patient_id . '%')->get();
+    // This function inserts patient prescriptions
+    public function insert_prescription(Request $request) {
+        $fields = $request->validate([
+            'name' => 'required',
+            'quantity' => 'required',
+            'dosage' => 'required'
+        ]); 
 
-        if (count($prescription)) {
-            return responder()->success($prescription->toArray())->meta(["message" => "Prescription fetched successfully"]);
-        } else {
-            return responder()->error(404, 'Patient ID id not found!')->respond(404);
+        $prescription = Prescription::create([
+            'name' => $fields['name'],
+            'quantity' => $fields['quantity'],
+            'dosage' => $fields['dosage']
+        ]); 
 
+        if ($prescription) {
             return response([
-                "message" => "There was an error updating the vitals records!!Please try again"
-            ], 401);
+                "message" => "Patient Prescription inserted successfully"
+            ], 200);
+        } else {
+            return responder()->error(404, "There was an error inserting the patient prescriptions!!!Please try again")->respond(404);  
+        }
+    }
 
+    // This function fetches the prescription of a patient
+    public function fetch_prescription($patient_id) {
+        $pid = DB::table('diagnoses')
+                    ->select('prescription_id')
+                    ->where('patient_id', $patient_id)
+                    ->orderBy('created_at', 'desc')
+                    ->value('prescription_id');
+
+        $prescription = Prescription::where('prescription_id', $pid)->get();
+
+        if ($prescription) {
+            return responder()->success($prescription)->meta(["message" => "Prescription fetched successfully"]);
+        } else {
+            return response([
+                "message" => "There was an error fetching the prescription!!Please confirm the patient ID and try again"
+            ], 404);
         }
     }
 
@@ -200,15 +201,7 @@ class MainController extends Controller
         if ($symptom) {
             return responder()->success($symptom)->meta(["message" => "Patient's Symptoms have been successfully inserted"]);
         } else {
-            return responder()->error(404, "There was an error inserting the patient symptoms!!!Please try again")->respond(404);  
-
-            return response([
-                "message" => "PatientController's Symptoms have been successfully inserted"
-            ], 200);
-        } else{
-            return response([
-                "message" => "There was an error inserting the patient symptoms!!Please try again"
-            ], 401);
+            return responder()->error(404, "There was an error inserting the patient symptoms!!!Please try again")->respond(404);
         }
     }
 

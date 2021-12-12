@@ -11,6 +11,7 @@ use App\Models\LabRequest;
 
 class LabRequestController extends Controller
 {
+	// This function is used by the doctor to request a lab sample for a patient.
  	public function request_lab(Request $request) {
  		$fields = $request->validate([
 	 		'patient_id' => 'required',
@@ -34,6 +35,7 @@ class LabRequestController extends Controller
         }
  	}   
 
+ 	// This function tracks the status of a requested lab sample.
  	public function update_lab_request(Request $request) {
  		$field = $request->validate([
  			'patient_id' => 'required'

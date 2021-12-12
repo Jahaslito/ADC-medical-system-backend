@@ -18,7 +18,7 @@ class CreateAppointmentsTable extends Migration
             $table->bigInteger('patient_id');
             $table->foreign('patient_id')->references('id')->on('users');
             $table->date('date_of_app');
-            $table->time('time_of_app');
+            $table->string('time_of_app');
             $table->bigInteger('doctor_id');
             $table->foreign('doctor_id')->references('id')->on('doctors');
             $table->bigInteger('receptionist_id');

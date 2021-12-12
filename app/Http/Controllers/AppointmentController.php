@@ -11,6 +11,7 @@ use App\Models\Appointment;
 
 class AppointmentController extends Controller
 {
+	// This function creates an appointment for a patient
     public function appointment(Request $request) {
     	$fields = $request->validate([
             'patient_id' => 'required',
@@ -38,12 +39,13 @@ class AppointmentController extends Controller
         }
     }
 
+    // This function queries appointments between two dates
     public function query_appointment($start_date, $end_date) {
     	$get_appointments = Appointment::whereBetween('date_of_app', [$start_date, $end_date])->get();
 
     	if ($get_appointments) {
             return responder()->success($get_appointments)->meta(["message" => "Appointments fetched successfully"]);
-            
+
         } else {
             return responder()->error(404, "There was an error making the appointment!!!Please try again")->respond(404);
         }
