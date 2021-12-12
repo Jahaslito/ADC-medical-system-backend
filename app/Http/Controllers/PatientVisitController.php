@@ -51,6 +51,7 @@ class PatientVisitController extends Controller
         }
     } 
 
+    // This function fetches the patients with a particular given status
     public function fetch_patient_with_status($status) {
     	$results = DB::table('patient_visits')
                     ->join('users', 'patient_visits.patient_id', '=', 'users.id')
