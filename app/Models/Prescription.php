@@ -19,10 +19,11 @@ class Prescription extends Model
         'prescription_id',
         'name',
         'quantity',
+        'diagnosis_id',
         'dosage'
     ];
 
     public function diagnosis() {
-    	return $this->belongsToMany(Diagnosis::class);
+    	return $this->hasMany(Diagnosis::class);
     }
 }

@@ -19,7 +19,6 @@ class Diagnosis extends Model
         'staff_id',
         'patient_id',
         'diagnosis',
-        'prescription_id'
     ];
 
     public function user() {

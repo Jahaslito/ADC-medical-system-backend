@@ -17,6 +17,8 @@ class CreatePrescriptionsTable extends Migration
             $table->bigIncrements('prescription_id');
             $table->string('name');
             $table->string('quantity');
+            $table->bigInteger('diagnosis_id');
+            $table->foreign('diagnosis_id')->references('diagnosis_id')->on('diagnoses');
             $table->string('dosage');
             $table->timestamps();
         });

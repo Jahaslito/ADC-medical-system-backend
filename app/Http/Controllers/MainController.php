@@ -100,7 +100,7 @@ class MainController extends Controller
 
     // Searching vitals for a particular patient
     public function search_vitals($patient_id) {
-        $vital_signs = VitalSigns::where('patient_id', 'LIKE', '%' . $patient_id . '%')->get();
+        $vital_signs = VitalSigns::where('patient_id', $patient_id)->orderBy('created_at', 'desc')->get();
 
         if (count($vital_signs)) {
             return responder()->success($vital_signs->toArray())->meta(["message" => "Patient's vitals fetched successfully"]);
@@ -111,7 +111,7 @@ class MainController extends Controller
 
     // Fetching patient diagnosis
     public function fetch_diagnosis($patient_id) {
-        $patient_diagnosis = Diagnosis::where('patient_id', 'LIKE', '%' . $patient_id . '%')->get();
+        $patient_diagnosis = Diagnosis::where('patient_id', $patient_id)->orderBy('created_at', 'desc')->get();
 
         if (count($patient_diagnosis)) {
             return responder()->success($patient_diagnosis->toArray())->meta(["message" => "Patient's diagnoses fetched successfully"]);
@@ -125,12 +125,14 @@ class MainController extends Controller
         $fields = $request->validate([
             'name' => 'required',
             'quantity' => 'required',
+            'diagnosis_id' => 'required',
             'dosage' => 'required'
         ]); 
 
         $prescription = Prescription::create([
             'name' => $fields['name'],
             'quantity' => $fields['quantity'],
+            'diagnosis_id' => $fields['diagnosis_id'],
             'dosage' => $fields['dosage']
         ]); 
 
@@ -168,14 +170,12 @@ class MainController extends Controller
             'staff_id' =>'required',
             'patient_id' => 'required',
             'diagnosis' => 'required',
-            'prescription_id' => 'required'
         ]);
 
         $diagnoses = Diagnosis::create([
             'staff_id' => $fields['staff_id'],
             'patient_id' => $fields['patient_id'],
             'diagnosis' => $fields['diagnosis'],
-            'prescription_id' => $fields['prescription_id']
         ]);
 
         if ($diagnoses) {
@@ -251,6 +251,26 @@ class MainController extends Controller
             return responder()->success($lab_result)->meta(["message" => "Lab records have been successfully inserted"]);
         } else {
             return responder()->error(404, "There was an error inserting the lab records!!!Please try again")->respond(404);  
+        }
+    }
+
+    // This function fetches the prescription and diagnosis for a patient
+    public function fetch_presc_diag($patient_id) {
+        $results = DB::table('prescriptions')
+                    ->join('diagnoses', 'prescriptions.diagnosis_id', '=', 'diagnoses.diagnosis_id')
+                    ->where('diagnoses.patient_id', $patient_id)
+                    ->orderBy('prescriptions.created_at', 'DESC')
+                    ->get();
+
+        $response = [
+            'data' => $results,
+            'message' => "Patient Diagnosis and Prescription fetched successfully"
+        ];
+
+        if ($results) {
+            return response($response);
+        } else {
+            return responder()->error(404, "There was an error fetching the patient diagnosis and prescription records!!!Please try again")->respond(404);  
         }
     }
 }

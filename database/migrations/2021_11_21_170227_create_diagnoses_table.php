@@ -22,9 +22,6 @@ class CreateDiagnosesTable extends Migration
             $table->foreign('patient_id')->references('id')->on('users');
 
             $table->string('diagnosis');
-            $table->bigInteger('prescription_id');
-            $table->foreign('prescription_id')->references('prescription_id')->on('prescriptions');
-
             $table->timestamps();
         });
     }
