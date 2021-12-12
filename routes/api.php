@@ -5,6 +5,9 @@ use App\Http\Controllers\DiseaseController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\StaffRegistration;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\LabRequestController;
+use App\Http\Controllers\PatientVisitController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -53,6 +56,13 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
         Route::post('/search_vitals/{patient_id}', [MainController::class, 'search_vitals']);
         Route::post('/fetch_diagnosis/{patient_id}', [MainController::class, 'fetch_diagnosis']);
         Route::post('/fetch_prescription/{patient_id}', [MainController::class, 'fetch_prescription']);
+        Route::post('/insert_prescription', [MainController::class, 'insert_prescription']);
+        Route::post('/appointment', [AppointmentController::class, 'appointment']);
+        Route::post('/query_appointment/{start_date}/{end_date}', [AppointmentController::class, 'query_appointment']);
+        Route::post('/request_lab', [LabRequestController::class, 'request_lab']);
+        Route::post('/update_lab_request', [LabRequestController::class, 'update_lab_request']);
+        Route::post('/insert_patient_visit', [PatientVisitController::class, 'insert_patient_visit']);
+        Route::post('/update_patient_visit', [PatientVisitController::class, 'update_patient_visit']);
     });
 });
 
