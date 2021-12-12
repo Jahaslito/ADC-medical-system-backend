@@ -50,4 +50,23 @@ class PatientVisitController extends Controller
             return responder()->error(404, "There was an error updating the patient visit record!!!Please try again")->respond(404);
         }
     } 
+
+    public function fetch_patient_with_status($status) {
+    	$results = DB::table('patient_visits')
+                    ->join('users', 'patient_visits.patient_id', '=', 'users.id')
+                    ->where('patient_visits.status', $status)
+                    ->orderBy('patient_visits.updated_at', 'desc')
+                    ->get();
+
+        $response = [
+        	'data' => $results,
+        	'message' => 'Patients successfully fetched'
+        ];
+
+    	if ($response) {
+ 			return response($response);
+        } else {
+            return responder()->error(404, "There was an error retrieving the requested patients' status!!!Please confirm the patient id and try again")->respond(404);
+        }
+    }
 }

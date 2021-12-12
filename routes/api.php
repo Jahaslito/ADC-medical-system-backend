@@ -66,12 +66,12 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
         Route::post('/update_patient_visit', [PatientVisitController::class, 'update_patient_visit']);
         Route::post('/fetch_presc_diag/{patient_id}', [MainController::class, 'fetch_presc_diag']);
         Route::post('/update_patient/{patient_id}', [PatientController::class, 'update_patient']);
+        Route::get('/fetch_all_results/{patient_id}', [MainController::class, 'fetch_all_results']);
+        Route::get('/fetch_lab_request/{status}', [LabRequestController::class, 'fetch_lab_request']);
+        Route::get('/fetch_patient_with_status/{status}', [PatientVisitController::class, 'fetch_patient_with_status']);
+
     });
 });
-
-
-
-
 
 Route::get('/test', function(){
     return "test";

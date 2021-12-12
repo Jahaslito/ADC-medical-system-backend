@@ -16,10 +16,9 @@ class LabResult extends Model
      * @var string[]
      */
     protected $fillable = [
-        'lab_test_id',
         'patient_id',
         'test_type',
-        'result_type_id'
+        'lab_result_id'
     ];
 
     public function user() {
@@ -31,6 +30,6 @@ class LabResult extends Model
     }
 
     public function vitalsigns() {
-    	$return $this->belongsTo(VitalSigns::class);
+    	return $this->belongsTo(VitalSigns::class);
     }
 }

@@ -52,4 +52,20 @@ class LabRequestController extends Controller
             return responder()->error(404, "There was an error updating the requested lab sample!!!Please confirm the patient id and try again")->respond(404);
         }
  	}
+
+ 	// This function fetches all lab requests given the status
+ 	public function fetch_lab_request($status) {
+ 		$results = LabRequest::where('status', $status)->get();
+
+ 		if ($results) {
+ 			return responder()->success($results)->meta(['Message' => 'Lab Requests fetched successfully']); 
+
+            return response([
+                "message" => "Requested Lab Sample updated successfully"
+            ], 200);
+
+        } else {
+            return responder()->error(404, "There was an error updating the requested lab sample!!!Please confirm the patient id and try again")->respond(404);
+        }
+ 	}
 }

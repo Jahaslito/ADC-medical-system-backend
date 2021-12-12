@@ -231,20 +231,19 @@ class MainController extends Controller
         $fields = $request->validate([
             'patient_id' => 'required',
             'test_type' => 'required',
-            'result_type_id' => 'required'
+            'lab_result_id' => 'required'
         ]);
 
         $res_type_id = DB::table('lab_result_types')
                                 ->select('lab_result_id')
                                 ->where('patient_id', $fields['patient_id'])
                                 ->latest('created_at')
-                                ->value('lab_result_id')
-                                ->first();
+                                ->value('lab_result_id');
 
         $lab_result = LabResult::create([
             'patient_id' => $fields['patient_id'],
             'test_type' => $fields['test_type'],
-            'result_type_id' => $res_type_id
+            'lab_result_id' => $res_type_id
         ]);
 
         if ($lab_result) {
@@ -271,6 +270,26 @@ class MainController extends Controller
             return response($response);
         } else {
             return responder()->error(404, "There was an error fetching the patient diagnosis and prescription records!!!Please try again")->respond(404);  
+        }
+    }
+
+    // This function is to fetch lab results with their respective lab result types
+    public function fetch_all_results($patient_id) {
+        $results = DB::table('lab_results')
+                    ->join('lab_result_types', 'lab_results.lab_result_id', '=', 'lab_result_types.lab_result_id')
+                    ->where('lab_results.patient_id', $patient_id)
+                    ->orderBy('lab_result_types.updated_at', 'DESC')
+                    ->get();
+
+        $response = [
+            'data' => $results,
+            'message' => "Patient Lab Results fetched successfully"
+        ];
+
+        if ($results) {
+            return response($response);
+        } else {
+            return responder()->error(404, "There was an error fetching the patient lab results records!!!Please try again")->respond(404);  
         }
     }
 }
