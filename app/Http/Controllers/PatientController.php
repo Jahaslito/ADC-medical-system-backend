@@ -25,4 +25,18 @@ class PatientController extends Controller
             return responder()->error(404, 'Patient not found!')->respond(404);
         }
     }
+
+    public function search(Request $request){
+        $patient = $request->validate([
+            'id' => 'required',
+        ]);
+
+        $result = User::where('id', 'LIKE', '%' . $patient['id'] . '%')->get();
+
+        if (count($result)) {
+            return responder()->success($result)->meta(['Message' => 'Patient found!']);
+        }else{
+            return responder()->error(404, 'Patient not found!')->respond(404);
+        }
+    }
 }
