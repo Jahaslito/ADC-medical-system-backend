@@ -38,7 +38,6 @@ Route::prefix('v1')->group(function () {
     Route::get('/lab_technicians', [StaffRegistration::class, 'show_all_lab_technicians']);
     Route::get('/receptionists', [StaffRegistration::class, 'show_all_receptionists']);
     Route::get('/patients', [PatientController::class, 'index']);
-    Route::post('/search_patient', [PatientController::class, 'show']);
     Route::post('/test', [DiseaseController::class, 'data_collection']);
  
 
@@ -69,6 +68,8 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
         Route::post('/update_lab_request', [LabRequestController::class, 'update_lab_request']);
         Route::post('/insert_patient_visit', [PatientVisitController::class, 'insert_patient_visit']);
         Route::post('/update_patient_visit', [PatientVisitController::class, 'update_patient_visit']);
+        Route::post('/search_patient', [PatientController::class, 'show']);
+
     });
 });
 
