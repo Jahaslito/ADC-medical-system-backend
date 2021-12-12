@@ -14,7 +14,7 @@ class PatientController extends Controller
 
     public function show(Request $request){
         $details = $request->validate([
-            'phone_number' => 'required|string|min:9',
+            'phone_number' => 'required|string',
         ]);
 
         $result = User::where('phone_number', 'LIKE', '%' . $details['phone_number'] . '%')->get();
