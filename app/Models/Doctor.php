@@ -17,4 +17,12 @@ class Doctor extends Model
         'password',
         'phone_number'
     ];
+
+    public function appointment() {
+    	return $this->hasMany(Appointment::class);
+    }
+
+    public function labrequest() {
+    	return $this->hasMany(LabRequest::class);
+    }
 }
