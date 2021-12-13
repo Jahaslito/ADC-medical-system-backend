@@ -41,10 +41,73 @@ class AppointmentController extends Controller
 
     // This function queries appointments between two dates
     public function query_appointment($start_date, $end_date) {
-    	$get_appointments = Appointment::whereBetween('date_of_app', [$start_date, $end_date])->get();
+    	$get_appointments = DB::table('appointments')
+			    				->join('users', 'appointments.patient_id', '=', 'users.id')
+			    				->join('doctors', 'appointments.doctor_id', '=', 'doctors.id')
+			    				->select('appointments.patient_id', 'users.first_name', 'users.last_name', 'appointments.date_of_app', 'appointments.time_of_app', 'appointments.doctor_id', 'doctors.doctor_first_name', 'doctors.doctor_last_name', 'appointments.created_at')
+			    				->whereBetween('date_of_app', array($start_date, $end_date))
+			    				->get();
 
     	if ($get_appointments) {
-            return responder()->success($get_appointments)->meta(["message" => "Appointments fetched successfully"]);
+    		$response = [
+				'data' => $get_appointments,
+				'message' => "Appointments fetched successfully"
+			];
+
+    		return response($response);
+
+        } else {
+            return responder()->error(404, "There was an error making the appointment!!!Please try again")->respond(404);
+        }
+    }
+
+    // This function queries the appointments a doctor has within certain dates
+    public function doctor_query_appointment($start_date, $end_date, Request $request) {
+    	$fields = $request->validate([
+            'id' => 'required'
+        ]);
+
+        $get_appointments = DB::table('appointments')
+			    				->join('users', 'appointments.patient_id', '=', 'users.id')
+			    				->join('doctors', 'appointments.doctor_id', '=', 'doctors.id')
+			    				->select('appointments.patient_id', 'users.first_name', 'users.last_name', 'appointments.date_of_app', 'appointments.time_of_app', 'appointments.doctor_id',  'doctors.doctor_first_name', 'doctors.doctor_last_name', 'appointments.created_at')
+			    				->where('appointments.doctor_id', $fields['id'])
+			    				->whereBetween('date_of_app', array($start_date, $end_date))
+			    				->get();
+
+    	if ($get_appointments) {
+    		$response = [
+				'data' => $get_appointments,
+				'message' => "Appointments fetched successfully"
+			];
+
+    		return response($response);
+
+        } else {
+            return responder()->error(404, "There was an error making the appointment!!!Please try again")->respond(404);
+        }
+    }
+
+    // This function queries appointments for the patient
+    public function patient_query_appointment(Request $request) {
+    	$fields = $request->validate([
+            'patient_id' => 'required'
+        ]);
+
+        $get_appointments = DB::table('appointments')
+			    				->join('users', 'appointments.patient_id', '=', 'users.id')
+			    				->join('doctors', 'appointments.doctor_id', '=', 'doctors.id')
+			    				->select('appointments.patient_id', 'users.first_name', 'users.last_name', 'appointments.date_of_app', 'appointments.time_of_app', 'appointments.doctor_id',  'doctors.doctor_first_name', 'doctors.doctor_last_name', 'appointments.created_at')
+			    				->where('appointments.patient_id', $fields['patient_id'])
+			    				->get();
+
+    	if ($get_appointments) {
+    		$response = [
+				'data' => $get_appointments,
+				'message' => "Appointments fetched successfully"
+			];
+
+    		return response($response);
 
         } else {
             return responder()->error(404, "There was an error making the appointment!!!Please try again")->respond(404);
