@@ -11,8 +11,8 @@ class Doctor extends Model
     use HasFactory, HasApiTokens;
 
     protected $fillable = [
-        'first_name',
-        'last_name',
+        'doctor_first_name',
+        'doctor_last_name',
         'email',
         'password',
         'phone_number'

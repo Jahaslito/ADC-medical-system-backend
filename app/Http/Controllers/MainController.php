@@ -242,16 +242,10 @@ class MainController extends Controller
             'lab_result_id' => 'required'
         ]);
 
-        $res_type_id = DB::table('lab_result_types')
-                                ->select('lab_result_id')
-                                ->where('patient_id', $fields['patient_id'])
-                                ->latest('created_at')
-                                ->value('lab_result_id');
-
         $lab_result = LabResult::create([
             'patient_id' => $fields['patient_id'],
             'test_type' => $fields['test_type'],
-            'lab_result_id' => $res_type_id
+            'lab_result_id' => $fields['lab_result_id']
         ]);
 
         if ($lab_result) {

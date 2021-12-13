@@ -26,7 +26,7 @@ class LabRequestController extends Controller
 	    	'description' => $fields['description']
 	    ]);
 
-	    if ($lab_request) {  
+	    if ($lab_request) {
 	    	$pat_name = User::where('id', $fields['patient_id'])->get();
 	    	$doct_name = Doctor::where('id', $fields['doctor_id'])->get();
 	    	$pat_name = json_decode($pat_name);
@@ -38,7 +38,7 @@ class LabRequestController extends Controller
 	    		'data' => $lab_request,
 	    		'message' => 'Lab Sample requested successfully'
 	    	];
-	    	
+
 	    	return response($response);
 
         } else {
@@ -66,17 +66,23 @@ class LabRequestController extends Controller
 
  	// This function fetches all lab requests given the status
  	public function fetch_lab_request($status) {
- 		$results = LabRequest::where('status', $status)->get();
+ 		$results = DB::table('lab_requests')
+ 					->join('users', 'lab_requests.patient_id', '=', 'users.id')
+ 					->join('doctors', 'lab_requests.doctor_id', '=', 'doctors.id')
+ 					->select('lab_requests.patient_id', 'users.first_name', 'users.last_name', 'lab_requests.description', 'lab_requests.doctor_id', 'doctors.doctor_first_name', 'doctors.doctor_last_name', 'lab_requests.status')
+ 					->where('lab_requests.status', $status)
+ 					->get();
 
  		if ($results) {
- 			return responder()->success($results)->meta(['Message' => 'Lab Requests fetched successfully']); 
+ 			$response = [
+ 				'data' => $results,
+ 				'message' => 'Lab Requests fetched successfully'
+ 			];
 
-            return response([
-                "message" => "Requested Lab Sample updated successfully"
-            ], 200);
+            return response($response);
 
         } else {
-            return responder()->error(404, "There was an error updating the requested lab sample!!!Please confirm the patient id and try again")->respond(404);
+            return responder()->error(404, "There was an error fetching the requested lab samples!!!Please confirm status and try again")->respond(404);
         }
  	}
 }
