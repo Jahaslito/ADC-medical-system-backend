@@ -279,6 +279,8 @@ class MainController extends Controller
     public function fetch_all_results($patient_id) {
         $results = DB::table('lab_results')
                     ->join('lab_result_types', 'lab_results.lab_result_id', '=', 'lab_result_types.lab_result_id')
+                    ->join('users', 'lab_results.patient_id', '=', 'users.id')
+                    ->select('lab_results.lab_test_id', 'lab_results.patient_id', 'users.first_name', 'users.last_name', 'lab_results.test_type', 'lab_result_types.lab_result_id', 'lab_results.created_at', 'lab_results.updated_at', 'lab_result_types.lab_result_name', 'lab_result_types.unit')
                     ->where('lab_results.patient_id', $patient_id)
                     ->orderBy('lab_result_types.updated_at', 'DESC')
                     ->get();
