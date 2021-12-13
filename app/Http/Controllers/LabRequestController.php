@@ -82,7 +82,30 @@ class LabRequestController extends Controller
             return response($response);
 
         } else {
-            return responder()->error(404, "There was an error fetching the requested lab samples!!!Please confirm status and try again")->respond(404);
+            return responder()->error(404, "There was an error fetching the lab requests!!!Please confirm status and try again")->respond(404);
+        }
+ 	}
+
+ 	// This function fetched the lab request for a particular patient using their patient_id
+ 	public function fetch_patient_lab_request($patient_id) {
+ 		$results = DB::table('lab_requests')
+ 					->join('users', 'lab_requests.patient_id', '=', 'users.id')
+ 					->join('doctors', 'lab_requests.doctor_id', '=', 'doctors.id')
+ 					->select('lab_requests.lab_request_id', 'lab_requests.patient_id', 'users.first_name', 'users.last_name', 'lab_requests.description', 'lab_requests.doctor_id', 'doctors.doctor_first_name', 'doctors.doctor_last_name', 'lab_requests.status', 'lab_requests.created_at')
+ 					->where('lab_requests.patient_id', $patient_id)
+ 					->where('lab_requests.status', 0)
+ 					->get();
+
+ 		if ($results) {
+ 			$response = [
+ 				'data' => $results,
+ 				'message' => 'Patient Lab Request fetched successfully'
+ 			];
+
+            return response($response);
+
+        } else {
+            return responder()->error(404, "There was an error fetching the patient lab request!!!Please confirm status and try again")->respond(404);
         }
  	}
 }

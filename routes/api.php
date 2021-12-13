@@ -72,6 +72,7 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
         Route::get('/fetch_all_lab_results', [MainController::class, 'fetch_all_lab_results']);
     });
 });
+Route::get('/fetch_patient_lab_request/{patient_id}', [LabRequestController::class, 'fetch_patient_lab_request']);
 
 
 Route::get('/test', function(){
