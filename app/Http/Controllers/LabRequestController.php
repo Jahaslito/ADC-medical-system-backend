@@ -49,10 +49,11 @@ class LabRequestController extends Controller
  	// This function tracks the status of a requested lab sample.
  	public function update_lab_request(Request $request) {
  		$field = $request->validate([
- 			'patient_id' => 'required'
+ 			'patient_id' => 'required',
+ 			'lab_request_id' => 'required'
  		]);
 
- 		$update = LabRequest::where('patient_id', $field['patient_id'])->update(array('status' => '1'));
+ 		$update = LabRequest::where('lab_request_id', $field['lab_request_id'])->update(array('status' => '1'));
 
  		if ($update) {            
             return response([
