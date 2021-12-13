@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Response;
 use Validator;
 use App\Models\User;
+use App\Models\Doctor;
 use App\Models\LabRequest;
 
 class LabRequestController extends Controller
@@ -25,10 +26,20 @@ class LabRequestController extends Controller
 	    	'description' => $fields['description']
 	    ]);
 
-	    if ($lab_request) {            
-            return response([
-                "message" => "Lab Sample requested successfully"
-            ], 200);
+	    if ($lab_request) {  
+	    	$pat_name = User::where('id', $fields['patient_id'])->get();
+	    	$doct_name = Doctor::where('id', $fields['doctor_id'])->get();
+	    	$pat_name = json_decode($pat_name);
+	    	$doct_name = json_decode($doct_name);
+
+	    	$response = [
+	    		'patient_name' => $pat_name[0]->first_name. ' '. $pat_name[0]->last_name,
+	    		'doctor_name' => $doct_name[0]->first_name. ' '. $doct_name[0]->last_name,
+	    		'data' => $lab_request,
+	    		'message' => 'Lab Sample requested successfully'
+	    	];
+	    	
+	    	return response($response);
 
         } else {
             return responder()->error(404, "There was an error requesting the lab sample!!!Please try again")->respond(404);
