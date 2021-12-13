@@ -28,6 +28,6 @@ class DiseaseController extends Controller
         ]);
 
 
-        return responser()->success($disease);
+        return responder()->success($disease);
     }
 }
