@@ -69,7 +69,7 @@ class LabRequestController extends Controller
  		$results = DB::table('lab_requests')
  					->join('users', 'lab_requests.patient_id', '=', 'users.id')
  					->join('doctors', 'lab_requests.doctor_id', '=', 'doctors.id')
- 					->select('lab_requests.lab_request_id', 'lab_requests.patient_id', 'users.first_name', 'users.last_name', 'lab_requests.description', 'lab_requests.doctor_id', 'doctors.doctor_first_name', 'doctors.doctor_last_name', 'lab_requests.status')
+ 					->select('lab_requests.lab_request_id', 'lab_requests.patient_id', 'users.first_name', 'users.last_name', 'lab_requests.description', 'lab_requests.doctor_id', 'doctors.doctor_first_name', 'doctors.doctor_last_name', 'lab_requests.status', 'lab_requests.created_at')
  					->where('lab_requests.status', $status)
  					->get();
 
