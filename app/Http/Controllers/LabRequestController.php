@@ -34,7 +34,7 @@ class LabRequestController extends Controller
 
 	    	$response = [
 	    		'patient_name' => $pat_name[0]->first_name. ' '. $pat_name[0]->last_name,
-	    		'doctor_name' => $doct_name[0]->first_name. ' '. $doct_name[0]->last_name,
+	    		'doctor_name' => $doct_name[0]->doctor_first_name. ' '. $doct_name[0]->doctor_last_name,
 	    		'data' => $lab_request,
 	    		'message' => 'Lab Sample requested successfully'
 	    	];
