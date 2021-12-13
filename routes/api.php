@@ -70,8 +70,10 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
         Route::get('/fetch_lab_request/{status}', [LabRequestController::class, 'fetch_lab_request']);
         Route::get('/fetch_patient_with_status/{status}', [PatientVisitController::class, 'fetch_patient_with_status']);
         Route::get('/fetch_all_results/{patient_id}', [MainController::class, 'fetch_all_results']);
+        Route::get('/fetch_all_lab_results', [MainController::class, 'fetch_all_lab_results']);
     });
 });
+
 
 Route::get('/test', function(){
     return "test";
