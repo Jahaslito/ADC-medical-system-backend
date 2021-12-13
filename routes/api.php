@@ -49,7 +49,7 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
     Route::prefix('v1')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::post('/vitals', [MainController::class, 'vitals']);
-        Route::post('/diagnosis', [MainController::class, 'diagnosis']);
+       
         Route::post('/symptoms', [MainController::class, 'symptoms']);
         Route::post('/lab_results', [MainController::class, 'lab_results']);
         Route::post('/lab_result_type', [MainController::class, 'lab_result_type']);
@@ -72,7 +72,7 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
 
     });
 });
-
+ Route::post('/diagnosis', [MainController::class, 'diagnosis']);
 Route::get('/test', function(){
     return "test";
 });

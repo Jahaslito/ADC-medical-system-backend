@@ -179,7 +179,15 @@ class MainController extends Controller
         ]);
 
         if ($diagnoses) {
-            return responder()->success($diagnoses)->meta(["message" => "Diagnosis records have been successfully inserted"]);
+            $data = Diagnosis::where('patient_id', $fields['patient_id'])->orderBy('updated_at', 'desc')->first();
+
+            if ($data) {
+                return responder()->success($data)->meta(["message" => "Diagnosis records have been successfully inserted"]);
+            } else {
+                return responder()->error(404, "There was an error inserting the diagnosis records!!!Please try again")->respond(404);
+            }
+
+            
         } else {
             return responder()->error(404, "There was an error inserting the diagnosis records!!!Please try again")->respond(404);  
         }
