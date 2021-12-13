@@ -14,7 +14,7 @@ class CreatePatientVisitsTable extends Migration
     public function up()
     {
         Schema::create('patient_visits', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('patient_visit_id');
             $table->bigInteger('patient_id');
             $table->foreign('patient_id')->references('id')->on('users');
             $table->tinyInteger('status')->default('0');

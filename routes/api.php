@@ -74,8 +74,6 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
     });
 });
 
-
-
 Route::get('/test', function(){
     return "test";
 });
