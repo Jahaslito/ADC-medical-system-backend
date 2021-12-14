@@ -8,6 +8,7 @@ use App\Http\Controllers\MainController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\LabRequestController;
 use App\Http\Controllers\PatientVisitController;
+use App\Http\Controllers\VideoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -73,8 +74,15 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
         Route::get('/fetch_patient_lab_request/{patient_id}', [LabRequestController::class, 'fetch_patient_lab_request']);
         Route::post('/doctor_query_appointment/{start_date}/{end_date}', [AppointmentController::class, 'doctor_query_appointment']);
         Route::post('/patient_query_appointment/{start_date}/{end_date}', [AppointmentController::class, 'patient_query_appointment']);
+        Route::post('/insert_link', [VideoController::class, 'insert_link']);
+        Route::post('/update_link/{video_id}', [VideoController::class, 'update_link']);
+        Route::get('/query_by_patient/{patient_id}', [VideoController::class, 'query_by_patient']);
+        Route::get('/query_by_doctor/{doctor_id}', [VideoController::class, 'query_by_doctor']);
+        Route::get('/query_all_links', [VideoController::class, 'query_all_links']);
     });
 });
+
+
 
 Route::get('/test', function(){
     return "test";

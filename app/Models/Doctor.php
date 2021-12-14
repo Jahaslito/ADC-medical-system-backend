@@ -25,4 +25,8 @@ class Doctor extends Model
     public function labrequest() {
     	return $this->hasMany(LabRequest::class);
     }
+
+    public function video() {
+        return $this->hasMany(Video::class);
+    }
 }

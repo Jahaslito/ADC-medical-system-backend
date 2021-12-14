@@ -75,4 +75,8 @@ class User extends Authenticatable
     public function labrequest() {
         return $this->hasMany(LabRequest::class);
     }
+
+     public function video() {
+        return $this->hasMany(Video::class);
+    }
 }
