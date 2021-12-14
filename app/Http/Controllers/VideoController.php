@@ -77,7 +77,7 @@ class VideoController extends Controller
     	$get_link = DB::table('videos')
     					->join('users', 'videos.patient_id', '=', 'users.id')
     					->join('doctors', 'videos.doctor_id', '=', 'doctors.id')
-    					->select('videos.video_id', 'videos.patient_id', 'users.first_name', 'users.last_name', 'doctors.doctor_first_name', 'doctors.doctor_last_name', 'videos.date_of_meet', 'videos.time_of_meet', 'videos.created_at', 'videos.updated_at')
+    					->select('videos.video_id', 'videos.patient_id', 'users.first_name', 'users.last_name', 'users.email', 'doctors.doctor_first_name', 'doctors.doctor_last_name', 'videos.date_of_meet', 'videos.time_of_meet', 'videos.created_at', 'videos.updated_at')
     					->where('videos.patient_id', $patient_id)
     					->get();
 
@@ -100,7 +100,7 @@ class VideoController extends Controller
     	$get_link = DB::table('videos')
     					->join('users', 'videos.patient_id', '=', 'users.id')
     					->join('doctors', 'videos.doctor_id', '=', 'doctors.id')
-    					->select('videos.video_id', 'videos.patient_id', 'users.first_name', 'users.last_name', 'doctors.doctor_first_name', 'doctors.doctor_last_name', 'videos.date_of_meet', 'videos.time_of_meet', 'videos.created_at', 'videos.updated_at')
+    					->select('videos.video_id', 'videos.patient_id', 'users.first_name', 'users.last_name', 'users.email', 'doctors.doctor_first_name', 'doctors.doctor_last_name', 'videos.date_of_meet', 'videos.time_of_meet', 'videos.created_at', 'videos.updated_at')
     					->where('videos.doctor_id', $doctor_id)
     					->get();
 
@@ -123,7 +123,7 @@ class VideoController extends Controller
     	$get_link = DB::table('videos')
     					->join('users', 'videos.patient_id', '=', 'users.id')
     					->join('doctors', 'videos.doctor_id', '=', 'doctors.id')
-    					->select('videos.video_id', 'videos.patient_id', 'users.first_name', 'users.last_name', 'doctors.doctor_first_name', 'doctors.doctor_last_name', 'videos.date_of_meet', 'videos.time_of_meet', 'videos.created_at', 'videos.updated_at')
+    					->select('videos.video_id', 'videos.patient_id', 'users.first_name', 'users.last_name', 'users.email', 'doctors.doctor_first_name', 'doctors.doctor_last_name', 'videos.date_of_meet', 'videos.time_of_meet', 'videos.created_at', 'videos.updated_at')
     					->get();
 
 
