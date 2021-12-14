@@ -19,8 +19,8 @@ class DoctorsSeeder extends Seeder
     {
         $faker = Faker::create('en_GB');
         DB::table('doctors')->insert([
-            'first_name' => $faker->firstName,
-            'last_name' => $faker->lastName,
+            'doctor_first_name' => $faker->firstName,
+            'doctor_last_name' => $faker->lastName,
             'email' => $faker->safeEmail,
             'phone_number' => $faker->phoneNumber,
         ]);
