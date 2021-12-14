@@ -71,8 +71,8 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
         Route::get('/fetch_patient_with_status/{status}', [PatientVisitController::class, 'fetch_patient_with_status']);
         Route::get('/fetch_all_lab_results', [MainController::class, 'fetch_all_lab_results']);
         Route::get('/fetch_patient_lab_request/{patient_id}', [LabRequestController::class, 'fetch_patient_lab_request']);
-        Route::get('/doctor_query_appointment/{start_date}/{end_date}', [AppointmentController::class, 'doctor_query_appointment']);
-        Route::get('/patient_query_appointment', [AppointmentController::class, 'patient_query_appointment']);
+        Route::post('/doctor_query_appointment/{start_date}/{end_date}', [AppointmentController::class, 'doctor_query_appointment']);
+        Route::post('/patient_query_appointment/{start_date}/{end_date}', [AppointmentController::class, 'patient_query_appointment']);
     });
 });
 
